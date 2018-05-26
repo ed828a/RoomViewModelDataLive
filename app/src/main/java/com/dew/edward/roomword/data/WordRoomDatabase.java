@@ -29,7 +29,7 @@ public abstract class WordRoomDatabase extends RoomDatabase {
                     // Create database here
                      INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                              WordRoomDatabase.class, "word_database")
-                             .addCallback(sRoomDatabaseCallback)
+                             .addCallback(sRoomDatabaseCallback) // for initial data purpose, just Singleton doesn't need this.
                              .build();
                 }
             }
@@ -37,6 +37,7 @@ public abstract class WordRoomDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
+    // for the purpose of initialization
     private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback(){
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
@@ -46,6 +47,7 @@ public abstract class WordRoomDatabase extends RoomDatabase {
         }
     };
 
+    // operating database are done asynchronously
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void>{
 
         private final WordDao mDao;
