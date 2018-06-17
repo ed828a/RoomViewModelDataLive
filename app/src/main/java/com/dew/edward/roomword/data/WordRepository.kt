@@ -7,15 +7,17 @@ package com.dew.edward.roomword.data
 import android.app.Application
 import android.arch.lifecycle.LiveData
 import android.os.AsyncTask
+import org.jetbrains.anko.doAsync
 
 class WordRepository(application: Application) {
 
     private val mWordDao: WordDao
     val allWords: LiveData<List<Word>>
+    lateinit var db: WordRoomDatabase
 
     init {
-        val db = WordRoomDatabase.getDatabase(application)
-        mWordDao = db?.wordDao()!!
+        db = WordRoomDatabase.getDatabase(application.applicationContext)
+        mWordDao = db.wordDao()
         allWords = mWordDao.allWords
     }
 
@@ -24,7 +26,7 @@ class WordRepository(application: Application) {
     }
 
     // every time when executing Dao insert method, this AsyncTask will be launched
-    class InsertAsyncTask (private val mAsyncTaskDao: WordDao) : AsyncTask<Word, Void, Void>() {
+    class InsertAsyncTask(private val mAsyncTaskDao: WordDao) : AsyncTask<Word, Void, Void>() {
 
         override fun doInBackground(vararg words: Word): Void? {
             mAsyncTaskDao.insert(words[0])

@@ -23,12 +23,12 @@ class NewWordActivity : AppCompatActivity() {
         val button = findViewById<Button>(R.id.button_save)
         button.setOnClickListener {
             val replyIntent = Intent()
-            if (edit_word.text.isNotEmpty()) {
+            if (edit_word.text.isEmpty()) {
                 setResult(Activity.RESULT_CANCELED, replyIntent)
             } else {
                 val word = mEditWordView!!.text.toString()
                 replyIntent.putExtra(EXTRA_REPLY, word)
-                setResult(Activity.RESULT_OK, replyIntent)
+                setResult(RESULT_OK, replyIntent)
             }
 
             finish()
